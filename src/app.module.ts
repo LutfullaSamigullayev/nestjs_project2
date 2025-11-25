@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
       database: String(process.env.DB_DATABASE as string),
       synchronize: true,
       models: []
-    })
+    }),
+    AuthModule
   ],
   controllers: [],
   providers: [],
