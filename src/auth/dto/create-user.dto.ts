@@ -8,3 +8,8 @@ export class VerifyDto {
     email: string;
     otp: string;
 }
+
+export class LoginDto {
+    email: string;
+    password: string;
+}
