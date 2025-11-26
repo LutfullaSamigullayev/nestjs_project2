@@ -11,12 +11,12 @@ export class User extends Model {
     @Column
     password: string
 
-    @Column
+    @Column({allowNull: true, defaultValue: null})
     otp: string
 
-    @Column
+    @Column({allowNull: true, defaultValue: null})
     otpTime: number
 
-    @Column
+    @Column({allowNull: true, defaultValue: false})
     isVerify: boolean
 }
