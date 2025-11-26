@@ -3,3 +3,8 @@ export class CreateUserDto {
     email: string;
     password: string;
 }
+
+export class VerifyDto {
+    email: string;
+    otp: string;
+}
