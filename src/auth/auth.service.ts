@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
-import { InjectModel } from "@nestjs/sequelize";
 import { User } from "./entities/user.entity";
 import { CreateUserDto, LoginDto, VerifyDto } from "./dto/create-user.dto";
 import * as bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer'
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class AuthService {
@@ -16,14 +17,14 @@ export class AuthService {
     }
   })
   constructor(
-    @InjectModel(User) private userModel: typeof User,
+    @InjectRepository(User) private userRepo: Repository<User>,
     private jwtService: JwtService
   ) {}
 
   async register(createUserDto: CreateUserDto): Promise<{ message: string }> {
     const { username, email, password } = createUserDto;
 
-    const foundedUser = await this.userModel.findOne({where: {email}})
+    const foundedUser = await this.userRepo.findOne({where: {email}})
 
     if(foundedUser) {
         throw new UnauthorizedException("User is exits")
@@ -41,7 +42,7 @@ export class AuthService {
 
     const time = Date.now()
 
-    await this.userModel.create({username, email, password: hash, otp: randomNumber, otpTime: (time + 120000)})
+    await this.userRepo.create({username, email, password: hash, otp: randomNumber, otpTime: (time + 120000)})
 
     return { message: "Registered" };
   }
@@ -49,7 +50,7 @@ export class AuthService {
   async verify(verifyDto: VerifyDto): Promise<{ message: string }> {
     const { email, otp } = verifyDto;
 
-    const foundedUser = await this.userModel.findOne({where: {email}})
+    const foundedUser = await this.userRepo.findOne({where: {email}})
 
     if(!foundedUser) {
         throw new UnauthorizedException("User not found")
@@ -57,12 +58,12 @@ export class AuthService {
     
     const time = Date.now()
 
-    if(foundedUser.dataValues.otpTime < time) {
+    if(foundedUser.otpTime < time) {
       throw new BadRequestException("Otp time expired")
     }
 
-    if(foundedUser.dataValues.otp === otp) {
-      await this.userModel.update({otp: null, otpTime: null, isVerify: true}, {where: {email}})
+    if(foundedUser.otp === otp) {
+      await this.userRepo.update({otp: null, otpTime: null, isVerify: true}, {where: {email}})
     } else {
       throw new BadRequestException("Wrong otp")
     }
@@ -72,15 +73,15 @@ export class AuthService {
 
   async login(loginDto: LoginDto): Promise<{ access_token: string }> {
     const { email, password } = loginDto;
-    const foundedUser = await this.userModel.findOne({where: {email}})
+    const foundedUser = await this.userRepo.findOne({where: {email}})
 
     if(!foundedUser) {
         throw new UnauthorizedException("User not found")
     }
 
-    const decode = await bcrypt.compare(password, foundedUser.dataValues.password)
-    if(decode && foundedUser.dataValues.isVerify) {
-      const payload = { sub: foundedUser.dataValues.id, username: foundedUser.dataValues.username };
+    const decode = await bcrypt.compare(password, foundedUser.password)
+    if(decode && foundedUser.isVerify) {
+      const payload = { sub: foundedUser.id, username: foundedUser.username };
       return {access_token: await this.jwtService.signAsync(payload)}
     }else {
       throw new BadRequestException("Invalid password")
