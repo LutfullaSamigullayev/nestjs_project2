@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { User } from "./schema/user.schema";
+import { User } from "./entities/user.entity";
 import { CreateUserDto, LoginDto, VerifyDto } from "./dto/create-user.dto";
 import * as bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer'
