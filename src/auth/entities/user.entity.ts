@@ -1,8 +1,10 @@
-import { Column, Entity } from "typeorm"
-
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 
 @Entity({name: "Auth"})
 export class User {
+    @PrimaryGeneratedColumn()
+    id: number
+
     @Column()
     username: string
 
@@ -12,6 +14,9 @@ export class User {
     @Column()
     password: string
 
+    @Column()
+    role: string
+
     @Column({nullable: true})
     otp: string
 
@@ -20,4 +25,10 @@ export class User {
 
     @Column({nullable: true, default: false})
     isVerify: boolean
+
+    @UpdateDateColumn()
+    updateAt: Date
+
+    @CreateDateColumn()
+    createAt: Date
 }
