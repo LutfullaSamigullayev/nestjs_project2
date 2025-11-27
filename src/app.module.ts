@@ -1,19 +1,19 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthModule } from './auth/auth.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: ".env", isGlobal: true}),
-    SequelizeModule.forRoot({
-      dialect: "postgres",
+  TypeOrmModule.forRoot({
+      type: "postgres",
       username: "postgres",
       port: 5432,
       password: String(process.env.DB_PASSWORD as string),
       database: String(process.env.DB_DATABASE as string),
       synchronize: true,
-      autoLoadModels: true,
+      entities: [],
       logging: false
     }),
     AuthModule
