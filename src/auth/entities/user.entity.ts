@@ -25,10 +25,10 @@ export class User {
   role: UserRole;
 
   @Column({ nullable: true })
-  otp: string;
+  otp: string | null;
 
   @Column({ nullable: true, type: "bigint" })
-  otpTime: number;
+  otpTime: number | null;
 
   @Column({ nullable: true, default: false })
   isVerify: boolean;
