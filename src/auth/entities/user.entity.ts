@@ -1,34 +1,41 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { UserRole } from "src/common/constants/role";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 
-@Entity({name: "Auth"})
+@Entity({ name: "Auth" })
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    username: string
+  @Column()
+  username: string;
 
-    @Column()
-    email: string
+  @Column()
+  email: string;
 
-    @Column()
-    password: string
+  @Column()
+  password: string;
 
-    @Column()
-    role: string
+  @Column({ default: UserRole.USER })
+  role: UserRole;
 
-    @Column({nullable: true})
-    otp: string
+  @Column({ nullable: true })
+  otp: string;
 
-    @Column({nullable: true, type: 'bigint'})
-    otpTime: number
+  @Column({ nullable: true, type: "bigint" })
+  otpTime: number;
 
-    @Column({nullable: true, default: false})
-    isVerify: boolean
+  @Column({ nullable: true, default: false })
+  isVerify: boolean;
 
-    @UpdateDateColumn()
-    updateAt: Date
+  @UpdateDateColumn()
+  updateAt: Date;
 
-    @CreateDateColumn()
-    createAt: Date
+  @CreateDateColumn()
+  createAt: Date;
 }
