@@ -89,4 +89,15 @@ export class AuthService {
       throw new BadRequestException("Invalid password")
     }
   }
+
+  async deleteUser (id: number): Promise<boolean> {
+    const foundedUser = await this.userRepo.findOne({where: {id}})
+
+    if(!foundedUser) {
+        throw new UnauthorizedException("User not found")
+    }
+    await this.userRepo.delete({id})
+
+    return true
+  }
 }
