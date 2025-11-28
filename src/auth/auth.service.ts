@@ -40,9 +40,11 @@ export class AuthService {
       text: `${randomNumber}`
     })
 
-    const time = Date.now()
+    const time = Date.now() + 120000
 
-    await this.userRepo.create({username, email, password: hash, otp: randomNumber, otpTime: (time + 120000)})
+    const newUser = this.userRepo.create({username, email, password: hash, otp: randomNumber, otpTime: time})
+
+    await this.userRepo.save(newUser)
 
     return { message: "Registered" };
   }
