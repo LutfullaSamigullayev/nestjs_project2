@@ -25,7 +25,7 @@ export class AuthController {
   }
 
   @HttpCode(200)
-  @Delete("delete")
+  @Delete("delete/:id")
   deleteUser(@Body() id: string ){
     return this.authService.deleteUser(+id)
   }
