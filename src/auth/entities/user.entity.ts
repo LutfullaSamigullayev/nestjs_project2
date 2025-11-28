@@ -24,11 +24,11 @@ export class User {
   @Column({ default: UserRole.USER })
   role: UserRole;
 
-  @Column({ nullable: true })
-  otp: string | null;
+  @Column()
+  otp: string;
 
-  @Column({ nullable: true, type: "bigint" })
-  otpTime: number | null;
+  @Column({ type: "bigint" })
+  otpTime: number;
 
   @Column({ nullable: true, default: false })
   isVerify: boolean;

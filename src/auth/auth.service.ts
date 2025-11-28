@@ -79,8 +79,8 @@ export class AuthService {
 
     if (foundedUser.otp === otp) {
       await this.userRepo.update(email, {
-        otp: null,
-        otpTime: null,
+        otp: '',
+        otpTime: 0,
         isVerify: true,
       });
     } else {
