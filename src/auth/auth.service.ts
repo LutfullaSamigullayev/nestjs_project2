@@ -100,7 +100,7 @@ export class AuthService {
 
     const decode = await bcrypt.compare(password, foundedUser.password);
     if (decode && foundedUser.isVerify) {
-      const payload = { sub: foundedUser.id, username: foundedUser.username };
+      const payload = { sub: foundedUser.id, username: foundedUser.username, role: foundedUser.role };
       return { access_token: await this.jwtService.signAsync(payload) };
     } else {
       throw new BadRequestException("Invalid password");
