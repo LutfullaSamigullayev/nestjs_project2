@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Delete, HttpCode, Param, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginDto, VerifyDto } from './dto/create-user.dto';
 
@@ -26,7 +26,7 @@ export class AuthController {
 
   @HttpCode(200)
   @Delete("delete/:id")
-  deleteUser(@Body() id: string ){
+  deleteUser(@Param() id: string ){
     return this.authService.deleteUser(+id)
   }
 }
