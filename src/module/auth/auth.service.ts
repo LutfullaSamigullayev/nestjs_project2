@@ -108,12 +108,12 @@ export class AuthService {
   }
 
   async deleteUser(id: number): Promise<boolean> {
-    const foundedUser = await this.userRepo.findOne({ where: { id } });
+    const foundedUser = await this.userRepo.findOneBy({id});
 
     if (!foundedUser) {
       throw new UnauthorizedException("User not found");
     }
-    await this.userRepo.delete({ id });
+    await this.userRepo.delete(id);
 
     return true;
   }
