@@ -17,6 +17,8 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter());
 
+  app.useLogger(app.get(CustomLogger));
+
   await app.listen(process.env.PORT ?? 3000, () => {
     console.log('Server ishladi: ', process.env.PORT);
   });
