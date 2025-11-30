@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './module/product/product.module';
 import { AuthModule } from './module/auth/auth.module';
+import { CustomLogger } from './common/logger/custom.logger';
 
 @Module({
   imports: [
@@ -24,6 +25,8 @@ import { AuthModule } from './module/auth/auth.module';
     ProductModule
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    CustomLogger
+  ],
 })
 export class AppModule {}
