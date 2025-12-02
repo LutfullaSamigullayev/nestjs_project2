@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './module/product/product.module';
 import { AuthModule } from './module/auth/auth.module';
 import { CustomLogger } from './common/logger/custom.logger';
+import { UploadModule } from './module/upload/upload.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { CustomLogger } from './common/logger/custom.logger';
     }),
     
     AuthModule,
-    ProductModule
+    ProductModule,
+    UploadModule
   ],
   controllers: [],
   providers: [
