@@ -4,9 +4,11 @@ import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { CustomLogger } from './common/logger/custom.logger';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -44,6 +46,10 @@ async function bootstrap() {
   SwaggerModule.setup("api-docs", app, documentFactory);
 
   app.useLogger(app.get(CustomLogger));
+
+  app.useStaticAssets(join(process.cwd(), 'uploads'), {
+    prefix: "/uploads/"
+  })
 
   await app.listen(process.env.PORT ?? 3000, () => {
     console.log('Server ishladi: ', process.env.PORT);
